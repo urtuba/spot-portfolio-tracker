@@ -1,4 +1,4 @@
-@startuml Class Diagram
+@startuml ClassDiagram
 
 class Investor <entity>{
     + name: String
@@ -21,6 +21,7 @@ class Wallet <entity> {
     + totalPNL ()
     + totalValue ()
     + addOwnedAsset (asset, amount, price)
+    + sellOwnedAsset (asset, amount, price)
 }
 
 class Asset <entity> {
@@ -70,9 +71,9 @@ Asset <|-- OwnedAsset
 OwnedAsset "1" o--> "n" Transaction: has >
 Wallet "1" o--> "n" Transaction: has >
 Wallet "1" o--> "n" OwnedAsset: has >
-Asset  --> AssetType
-Transaction --> TransactionType
-Investor --> Asset
+Asset  --> "1" AssetType
+Transaction --> "1" TransactionType
+Investor "1" --> "n" Asset
 
 
 @enduml
