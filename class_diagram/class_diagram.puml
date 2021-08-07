@@ -1,0 +1,78 @@
+@startuml Class Diagram
+
+class Investor <entity>{
+    + name: String
+    + email: String
+    - password: String
+    + wallets: [Wallet]
+    + favorites: [Asset]
+    + totalValue ()
+    + totalPNL ()
+    + addFavorite ()
+    + removeFavorite ()
+    + addWallet (name)
+    + getWallet (name)
+}
+
+class Wallet <entity> {
+    + name: String
+    + assets: [OwnedAsset]
+    + transactions: [Transaction]
+    + totalPNL ()
+    + totalValue ()
+    + addOwnedAsset (asset, amount, price)
+}
+
+class Asset <entity> {
+    + symbol: String
+    + name: String
+    + type: String
+}
+
+class OwnedAsset <assetObject> {
+    + asset: Asset
+    + amount: Number
+    - boughtAmount: Number
+    + avgBuyPrice: Number
+    + transactions: [Transaction]
+    + value (price)
+    + sell (amount, price)
+    + buy (amount, price)
+    + unrealizedPNL (price)
+    + totalPNL ()
+}
+
+class Transaction <transactionObject> {
+    + time: Number / Datetime
+    + asset: Asset
+    + type: Type
+    + amount: Number
+    + price: Number
+    + PNL: Number
+}
+
+enum AssetType <enum> {
+    STOCK
+    COIN
+    TOKEN
+    CURRENCY
+}
+
+enum TransactionType <enum> {
+    ADD
+    REMOVE
+    BUY
+    SELL
+}
+
+Wallet "n" <-UP-* "1" Investor:  owns <
+Asset <|-- OwnedAsset
+OwnedAsset "1" o--> "n" Transaction: has >
+Wallet "1" o--> "n" Transaction: has >
+Wallet "1" o--> "n" OwnedAsset: has >
+Asset  --> AssetType
+Transaction --> TransactionType
+Investor --> Asset
+
+
+@enduml
