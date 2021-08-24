@@ -21,7 +21,9 @@ class Wallet <entity> {
     + totalPNL ()
     + totalValue ()
     + addOwnedAsset (asset, amount, price)
+    + buyOwnedAsset (asset, amount, price)
     + sellOwnedAsset (asset, amount, price)
+    + removeOwnedAsset (asset, amount, price)
 }
 
 class Asset <entity> {
@@ -30,15 +32,13 @@ class Asset <entity> {
     + type: String
 }
 
-class OwnedAsset <assetObject> {
+class PortfolioItem <assetObject> {
     + asset: Asset
     + amount: Number
     - boughtAmount: Number
     + avgBuyPrice: Number
     + transactions: [Transaction]
     + value (price)
-    + sell (amount, price)
-    + buy (amount, price)
     + unrealizedPNL (price)
     + totalPNL ()
 }
@@ -53,7 +53,6 @@ class Transaction <transactionObject> {
 }
 
 enum AssetType <enum> {
-    STOCK
     COIN
     TOKEN
     CURRENCY
@@ -66,11 +65,11 @@ enum TransactionType <enum> {
     SELL
 }
 
-Wallet "n" <-UP-* "1" Investor:  owns <
-Asset <|-- OwnedAsset
-OwnedAsset "1" o--> "n" Transaction: has >
+Wallet "n" <-UP-* "1" Investor: owns <
+Asset <|-- PortfolioItem
+PortfolioItem "1" o--> "n" Transaction: has >
 Wallet "1" o--> "n" Transaction: has >
-Wallet "1" o--> "n" OwnedAsset: has >
+Wallet "1" o--> "n" PortfolioItem: has >
 Asset  --> "1" AssetType
 Transaction --> "1" TransactionType
 Investor "1" --> "n" Asset
