@@ -12,18 +12,20 @@ class Investor <entity>{
     + removeFavorite ()
     + addWallet (name)
     + getWallet (name)
+    + removeWallet (name)
 }
 
 class Wallet <entity> {
     + name: String
-    + assets: [OwnedAsset]
+    + portfolio: [PortfolioEntry]
     + transactions: [Transaction]
     + totalPNL ()
     + totalValue ()
-    + addOwnedAsset (asset, amount, price)
-    + buyOwnedAsset (asset, amount, price)
-    + sellOwnedAsset (asset, amount, price)
-    + removeOwnedAsset (asset, amount, price)
+    + getPortfolioEntry (name)
+    + addAsset (asset, amount, price)
+    + buyAsset (asset, amount, price)
+    + sellAsset (asset, amount, price)
+    + removeAsset (asset, price, savePNL)
 }
 
 class Asset <entity> {
@@ -32,7 +34,7 @@ class Asset <entity> {
     + type: String
 }
 
-class PortfolioItem <assetObject> {
+class PortfolioEntry <portfolioEntryObject> {
     + asset: Asset
     + amount: Number
     - boughtAmount: Number
@@ -49,7 +51,7 @@ class Transaction <transactionObject> {
     + type: Type
     + amount: Number
     + price: Number
-    + PNL: Number
+    + pnl: Number
 }
 
 enum AssetType <enum> {
@@ -66,10 +68,10 @@ enum TransactionType <enum> {
 }
 
 Wallet "n" <-UP-* "1" Investor: owns <
-Asset <|-- PortfolioItem
-PortfolioItem "1" o--> "n" Transaction: has >
+Asset <|-- PortfolioEntry
+PortfolioEntry "1" o--> "n" Transaction: has >
 Wallet "1" o--> "n" Transaction: has >
-Wallet "1" o--> "n" PortfolioItem: has >
+Wallet "1" o--> "n" PortfolioEntry: has >
 Asset  --> "1" AssetType
 Transaction --> "1" TransactionType
 Investor "1" --> "n" Asset
