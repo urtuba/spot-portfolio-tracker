@@ -1,9 +1,9 @@
-class Transcation {
+class Transaction {
   static types = {
-    add: 'Add',
-    buy: 'Buy',
-    sell: 'Sell',
-    remove: 'Remove'
+    ADD: 'Add',
+    BUY: 'Buy',
+    SELL: 'Sell',
+    REMOVE: 'Remove'
   }
   
   constructor(asset, type, amount, price, pnl) {
@@ -16,4 +16,4 @@ class Transcation {
   }
 }
 
-module.exports = Transcation
+module.exports = Transaction

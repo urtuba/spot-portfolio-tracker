@@ -1,8 +1,8 @@
 class Asset {
   static types = {
-    coin: 'Coin',
-    token: 'Token',
-    fiat: 'Fiat'
+    COIN: 'Coin',
+    TOKEN: 'Token',
+    FIAT: 'Fiat'
   }
 
   constructor(name, symbol, type) {
