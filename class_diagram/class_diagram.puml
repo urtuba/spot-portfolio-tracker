@@ -76,5 +76,4 @@ Asset  --> "1" AssetType
 Transaction --> "1" TransactionType
 Investor "1" --> "n" Asset
 
-
 @enduml
