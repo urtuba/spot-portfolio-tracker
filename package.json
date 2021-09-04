@@ -1,5 +1,28 @@
 {
   "dependencies": {
     "uuid": "^8.3.2"
-  }
+  },
+  "name": "spot-portfolio-tracker",
+  "version": "0.0.2",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/urtuba/spot-portfolio-tracker.git"
+  },
+  "keywords": [
+    "portfolio",
+    "cryptoassets",
+    "trading"
+  ],
+  "author": "urtuba / Samed Kahyaoglu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/urtuba/spot-portfolio-tracker/issues"
+  },
+  "homepage": "https://github.com/urtuba/spot-portfolio-tracker#readme",
+  "description": ""
 }
