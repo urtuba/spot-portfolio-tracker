@@ -4,14 +4,18 @@ const PortfolioEntry = require('./models/portfolio_entry')
 const Wallet = require('./models/wallet')
 const Investor = require('./models/investor')
 
-samed = new Investor('Samed', 'samed@tutanota.com', 'pwd')
-samed.addWallet('Short Term')
-usd = new Asset('US Dollar', 'USD', Asset.types.CURRENCY)
-btc = new Asset('Bitcoin', 'BTC', Asset.types.COIN)
+const investorDatabase = require('./database/investor-db')
 
-shortTermWallet = samed.getWallet('Short Term')
-shortTermWallet.addAsset(usd, 1000.0, 1.0)
-shortTermWallet.addAsset(btc, 0.4, 45000)
-shortTermWallet.buyAsset(btc, 1, 50000)
-shortTermWallet.removeAsset(btc, 48500, true)
-console.log(shortTermWallet)
+const s = new Investor('Samed', 'samed@tutanota.com', 'pwd')
+const btc = new Asset('Bitcoin', 'BTC', Asset.types.COIN)
+const usd = new Asset('Dollars', 'USD', Asset.types.FIAT)
+
+const wallet = s.getWallet('Main')
+wallet.addAsset(btc, 10, 34000)
+wallet.buyAsset(btc, 5, 50000)
+wallet.sellAsset(btc, 8, 44000)
+
+investorDatabase.save([s])
+const out = investorDatabase.load()
+
+console.log(out[0].getWallet('Main'))
