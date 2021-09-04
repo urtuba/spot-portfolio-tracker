@@ -1,11 +1,20 @@
 const PortfolioEntry = require("./portfolio_entry")
 const Transaction = require('./transaction')
 
+
 class Wallet {
   constructor(name) {
     this.name = name
     this.portfolio = []
     this.transactions = []
+  }
+
+  static create(walletObj) {
+    const wallet = new Wallet(walletObj.name)
+    wallet.portfolio = walletObj.portfolio.map(PortfolioEntry.create)
+    wallet.transactions = walletObj.transactions.map(Transaction.create)
+
+    return wallet
   }
 
   get totalValue() {

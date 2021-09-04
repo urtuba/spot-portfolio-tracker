@@ -1,3 +1,7 @@
+const Asset = require('./asset')
+const Transaction = require('./transaction')
+
+
 class PortfolioEntry {
   constructor(asset, amount, buyPrice) {
     this.asset = asset
@@ -6,6 +10,16 @@ class PortfolioEntry {
     this.avgBuyPrice = buyPrice
     this.transactions = []
   }
+
+  static create(portfolioObj) {
+    const assetObj = portfolioObj.asset
+    const asset = new Asset(assetObj.name, assetObj.symbol, assetObj.type)
+    const entry = new PortfolioEntry(asset, portfolioObj.amount, portfolioObj.avgBuyPrice)
+    entry.boughtAmount = portfolioObj.boughtAmount
+    entry.transactions = portfolioObj.transactions.map(Transaction.create)
+    
+    return entry
+  } 
 
   value(price) {
     return this.amount * price

@@ -1,4 +1,6 @@
-Wallet = require('./wallet')
+const Asset = require('./asset')
+const Wallet = require('./wallet')
+
 
 class Investor {
   constructor(name, email, password) {
@@ -10,6 +12,14 @@ class Investor {
     this.wallets = [mainWallet]
     this.favorites = new Set()
     this.pastPNL = 0
+  }
+
+  static create(investorObj) {
+    const investor = new Investor(investorObj.name, investorObj.email, investorObj.pwd)
+    investor.wallets = investorObj.wallets.map(Wallet.create)
+    investor.pastPNL = investorObj.pastPNL
+
+    return investor
   }
 
   get totalPNL() {

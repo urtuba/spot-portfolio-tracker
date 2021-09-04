@@ -10,6 +10,10 @@ class Asset {
     this.symbol = symbol
     this.type = type
   }
+
+  static create({name, symbol, type}) {
+    return new Investor(name, symbol, type)
+}
 }
 
 module.exports = Asset
