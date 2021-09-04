@@ -4,15 +4,15 @@ const fs = require('fs')
 class BaseDatabase {
   constructor(model) {
     this.model = model
-    this.filename = model.name
+    this.filename = model.name.toLowerCase()
   }
 
   save (objects) {
-    fs.writeFileSync(`./${this.filename}.json`, JSON.stringify(objects), )
+    fs.writeFileSync(`./database/data/${this.filename}.json`, JSON.stringify(objects), )
   }
   
   load () {
-    const file = fs.readFileSync(`./${this.filename}.json`, 'utf-8')
+    const file = fs.readFileSync(`./database/data/${this.filename}.json`, 'utf-8')
     const objects = JSON.parse(file)
 
     return objects.map(this.model.create)
@@ -20,20 +20,30 @@ class BaseDatabase {
   
   insert (object) {
     const objects = load(this.filename)
-    save(filename, objects.concat(object))
+    this.save(filename, objects.concat(object))
   }
   
   remove (index) {
     const objects = load(this.filename)
   
     objects.splice(index, 1)
-    save(objects)
+    this.save(objects)
   }
   
   findByName (name) {
     const objects = load(this.filename)
   
     return objects.find(investor => investor.name == name)
+  }
+
+  update (object) {
+    const objects = this.load(this.filename)
+    const idx = objects.findIndex(investor => investor.id == object.id)
+    
+    if (idx == -1) throw new Error(`Cannot find ${this.model.name} with id ${object.id}`)
+    
+    objects.splice(idx, 1, object)
+    this.save(objects)
   }
 }
 
