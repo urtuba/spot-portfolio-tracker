@@ -1,4 +1,4 @@
-const PortfolioEntry = require("./portfolio_entry")
+const PortfolioEntry = require("./portfolio-entry")
 const Transaction = require('./transaction')
 
 

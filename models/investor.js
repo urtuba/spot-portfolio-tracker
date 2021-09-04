@@ -1,9 +1,10 @@
 const Asset = require('./asset')
 const Wallet = require('./wallet')
-
+const uuid = require('uuid')
 
 class Investor {
-  constructor(name, email, password) {
+  constructor(id = uuid.v4(), name, email, password) {
+    this.id = id
     this.name = name
     this.email = email
     this.password = password
@@ -15,7 +16,7 @@ class Investor {
   }
 
   static create(investorObj) {
-    const investor = new Investor(investorObj.name, investorObj.email, investorObj.pwd)
+    const investor = new Investor(investorObj.id, investorObj.name, investorObj.email, investorObj.password)
     investor.wallets = investorObj.wallets.map(Wallet.create)
     investor.pastPNL = investorObj.pastPNL
 
@@ -40,7 +41,7 @@ class Investor {
     return true
   }
 
-  addWallet(name) {
+  createWallet(name) {
     const newWallet = new Wallet(name)
     this.wallets.push(newWallet)
     return true
