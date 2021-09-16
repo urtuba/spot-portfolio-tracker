@@ -4,7 +4,7 @@ class Investor <entity>{
     + name: String
     + email: String
     - password: String
-    + wallets: [Wallet]
+    + wallets: [PortfolioManager]
     + favorites: [Asset]
     + totalValue ()
     + totalPNL ()
@@ -15,7 +15,7 @@ class Investor <entity>{
     + removeWallet (name)
 }
 
-class Wallet <entity> {
+class PortfolioManager <entity> {
     + name: String
     + portfolio: [PortfolioEntry]
     + transactions: [Transaction]
@@ -67,11 +67,11 @@ enum TransactionType <enum> {
     SELL
 }
 
-Wallet "n" <-UP-* "1" Investor: owns <
+PortfolioManager "n" <-UP-* "1" Investor: owns <
 Asset <|-- PortfolioEntry
 PortfolioEntry "1" o--> "n" Transaction: has >
-Wallet "1" o--> "n" Transaction: has >
-Wallet "1" o--> "n" PortfolioEntry: has >
+PortfolioManager "1" o--> "n" Transaction: has >
+PortfolioManager "1" o--> "n" PortfolioEntry: has >
 Asset  --> "1" AssetType
 Transaction --> "1" TransactionType
 Investor "1" --> "n" Asset
