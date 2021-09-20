@@ -106,3 +106,4 @@ dist
 # Project Specific
 out/
 .DS_Store
+database/data/
