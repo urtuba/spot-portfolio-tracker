@@ -1,3 +1,5 @@
+const uuid = require('uuid')
+
 class Asset {
   static types = {
     COIN: 'Coin',
@@ -5,14 +7,15 @@ class Asset {
     FIAT: 'Fiat'
   }
 
-  constructor(name, symbol, type) {
+  constructor(id=uuid.v4(), name, symbol, type) {
+    this.id = id
     this.name = name
     this.symbol = symbol
     this.type = type
   }
 
-  static create({name, symbol, type}) {
-    return new Investor(name, symbol, type)
+  static create({id, name, symbol, type}) {
+    return new Asset(id, name, symbol, type)
 }
 }
 

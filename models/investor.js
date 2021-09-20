@@ -1,5 +1,5 @@
 const Asset = require('./asset')
-const Wallet = require('./wallet')
+const PortfolioManager = require('./portfolio-manager')
 const uuid = require('uuid')
 
 class Investor {
@@ -9,16 +9,17 @@ class Investor {
     this.email = email
     this.password = password
     
-    const mainWallet = new Wallet('Main')
+    const mainWallet = new PortfolioManager(undefined, 'Main')
     this.wallets = [mainWallet]
-    this.favorites = new Set()
+    this.favorites = []
     this.pastPNL = 0
   }
 
   static create(investorObj) {
     const investor = new Investor(investorObj.id, investorObj.name, investorObj.email, investorObj.password)
-    investor.wallets = investorObj.wallets.map(Wallet.create)
+    investor.wallets = investorObj.wallets.map(PortfolioManager.create)
     investor.pastPNL = investorObj.pastPNL
+    investor.favorites = investorObj.favorites.map(Asset.create)
 
     return investor
   }
@@ -32,17 +33,24 @@ class Investor {
   }
 
   addFavorite(asset) {
-    this.favorites.add(asset)
+    if (this.favorites.findIndex(o => o.name == asset.name) >= 0)
+      return false
+    
+    this.favorites.push(asset)
     return true
   }
 
   removeFavorite(asset) {
-    this.favorites.delete(asset)
+    const idx = this.favorites.findIndex(o => o.name == asset.name)
+    if (idx == -1) 
+      return false
+
+    this.favorites.splice(idx, 1)
     return true
   }
 
   createWallet(name) {
-    const newWallet = new Wallet(name)
+    const newWallet = new PortfolioManager(undefined, name)
     this.wallets.push(newWallet)
     return true
   }

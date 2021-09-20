@@ -1,20 +1,26 @@
+const uuid = require('uuid')
 const PortfolioEntry = require("./portfolio-entry")
 const Transaction = require('./transaction')
 
-
-class Wallet {
-  constructor(name) {
-    this.name = name
+/*
+  PorfolioManager has the operations to make users manage their portfolio.
+  It is some kind of superset of 'wallets' in usual portfolio tracker apps.
+  Investors use PortfolioManager as their wallets.
+*/
+class PortfolioManager {
+  constructor(id=uuid.v4(), portfolioName) {
+    this.id = id
+    this.portfolioName = portfolioName
     this.portfolio = []
     this.transactions = []
   }
 
-  static create(walletObj) {
-    const wallet = new Wallet(walletObj.name)
-    wallet.portfolio = walletObj.portfolio.map(PortfolioEntry.create)
-    wallet.transactions = walletObj.transactions.map(Transaction.create)
+  static create(pmObj) {
+    const pm = new PortfolioManager(pmObj.id, pmObj.portfolioName)
+    pm.portfolio = pmObj.portfolio.map(PortfolioEntry.create)
+    pm.transactions = pmObj.transactions.map(Transaction.create)
 
-    return wallet
+    return pm
   }
 
   get totalValue() {
@@ -64,7 +70,7 @@ class Wallet {
     this.portfolio.splice(entryIdx, 1)
     
     const pnl = savePNL ? entry.unrealizedPNL(price) : 0
-    const tx = new Transaction(asset, Transaction.types.REMOVE, entry.amount, price, pnl)
+    const tx = new Transaction(undefined, asset, Transaction.types.REMOVE, entry.amount, price, pnl)
     this.transactions.push(tx)
 
     return true
@@ -79,7 +85,7 @@ class Wallet {
     entry.amount += amount
     entry.boughtAmount += amount
 
-    const tx = new Transaction(asset, Transaction.types.BUY, amount, price, 0)
+    const tx = new Transaction(undefined, asset, Transaction.types.BUY, amount, price, 0)
     entry.transactions.push(tx)
     this.transactions.push(tx)
 
@@ -96,7 +102,7 @@ class Wallet {
       this.portfolio.splice(entryIdx, 1)
       
       const pnl = entry.unrealizedPNL(price)
-      const tx = new Transaction(asset, Transaction.types.SELL, amount, price, pnl)
+      const tx = new Transaction(undefined, asset, Transaction.types.SELL, amount, price, pnl)
       this.transactions.push(tx)
 
       return true
@@ -104,7 +110,7 @@ class Wallet {
     else {
       entry.amount -= amount
       const pnl = amount * (price - entry.avgBuyPrice)
-      const tx = new Transaction(asset, Transaction.types.SELL, amount, price, pnl)
+      const tx = new Transaction(undefined, asset, Transaction.types.SELL, amount, price, pnl)
 
       this.transactions.push(tx)
       entry.transactions.push(tx)
@@ -114,4 +120,4 @@ class Wallet {
   }
 }
 
-module.exports = Wallet
+module.exports = PortfolioManager
