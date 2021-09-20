@@ -8,4 +8,4 @@ class TransactionDatabase extends BaseDatabase {
     }
 }
 
-module.exports = new TransactionDatabase()
+module.exports = new TransactionDatabase

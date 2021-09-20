@@ -22,7 +22,7 @@ class Transaction {
 
   static create(txObj) {
     const assetObj = txObj.asset
-    const asset = new Asset(assetObj.name, assetObj.symbol, assetObj.type)
+    const asset = new Asset(assetObj.id, assetObj.name, assetObj.symbol, assetObj.type)
     const tx = new Transaction(txObj.id, asset, txObj.type, txObj.amount, txObj.price, txObj.pnl)
     tx.time = txObj.time
 

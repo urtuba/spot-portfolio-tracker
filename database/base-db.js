@@ -12,6 +12,9 @@ class BaseDatabase {
   }
   
   load () {
+    if (!fs.existsSync(`./database/data/${this.filename}.json`))
+      fs.writeFileSync(`./database/data/${this.filename}.json`, '[]')
+
     const file = fs.readFileSync(`./database/data/${this.filename}.json`, 'utf-8')
     const objects = JSON.parse(file)
 
@@ -19,23 +22,32 @@ class BaseDatabase {
   }
   
   insert (object) {
-    const objects = load(this.filename)
-    if (objects.findIndex(o => o.id == object.id))
+    const objects = this.load()
+    if (objects.findIndex(o => o.id == object.id) >= 0)
       return
 
-    this.save(filename, objects.concat(object))
+    this.save(objects.concat(object))
   }
   
   remove (index) {
-    const objects = load(this.filename)
+    const objects = this.load()
   
     objects.splice(index, 1)
     this.save(objects)
   }
 
+  findById (id) {
+    const objects = this.load()
+    const objIdx = objects.findIndex(obj => obj.id == id)
+
+    if (objIdx < 0)
+      return null
+    return objects[objIdx]
+  }
+
   update (object) {
-    const objects = this.load(this.filename)
-    const idx = objects.findIndex(investor => investor.id == object.id)
+    const objects = this.load()
+    const idx = objects.findIndex(obj => obj.id == object.id)
     
     if (idx == -1) throw new Error(`Cannot find ${this.model.name} with id ${object.id}`)
     

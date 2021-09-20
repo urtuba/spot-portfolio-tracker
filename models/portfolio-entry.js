@@ -1,5 +1,6 @@
 const Asset = require('./asset')
 const Transaction = require('./transaction')
+const transactionDatabase = require('../database/transaction-db')
 
 
 class PortfolioEntry {
@@ -13,10 +14,10 @@ class PortfolioEntry {
 
   static create(portfolioObj) {
     const assetObj = portfolioObj.asset
-    const asset = new Asset(assetObj.name, assetObj.symbol, assetObj.type)
+    const asset = new Asset(assetObj.id, assetObj.name, assetObj.symbol, assetObj.type)
     const entry = new PortfolioEntry(asset, portfolioObj.amount, portfolioObj.avgBuyPrice)
     entry.boughtAmount = portfolioObj.boughtAmount
-    entry.transactions = portfolioObj.transactions.map(Transaction.create)
+    entry.transactions = portfolioObj.transactions
     
     return entry
   } 
@@ -32,9 +33,13 @@ class PortfolioEntry {
   get totalPNL() {
     let totalPnl = 0
     for (let i = 0; i < this.transactions.length; i++) {
-      totalPnl += this.transactions[i].pnl
+      totalPnl += transactionDatabase.fin
     }
     return totalPnl
+  }
+
+  get allTransactions() {
+    return this.transactions.map(id => transactionDatabase.findById(id))
   }
 }
 

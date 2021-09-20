@@ -2,6 +2,9 @@ const uuid = require('uuid')
 const PortfolioEntry = require("./portfolio-entry")
 const Transaction = require('./transaction')
 
+const transactionDatabase = require('../database/transaction-db')
+
+
 /*
   PorfolioManager has the operations to make users manage their portfolio.
   It is some kind of superset of 'wallets' in usual portfolio tracker apps.
@@ -18,9 +21,13 @@ class PortfolioManager {
   static create(pmObj) {
     const pm = new PortfolioManager(pmObj.id, pmObj.portfolioName)
     pm.portfolio = pmObj.portfolio.map(PortfolioEntry.create)
-    pm.transactions = pmObj.transactions.map(Transaction.create)
+    pm.transactions = pmObj.transactions
 
     return pm
+  }
+
+  get allTransactions() {
+    return this.transactions.map(id => transactionDatabase.findById(id))
   }
 
   get totalValue() {
@@ -53,10 +60,11 @@ class PortfolioManager {
     if (entry) return false
 
     const newEntry = new PortfolioEntry(asset, amount, price)
-    const firstTx = new Transaction(asset, Transaction.types.ADD, amount, price, 0)
+    const firstTx = new Transaction(undefined, asset, Transaction.types.ADD, amount, price, 0)
     
-    newEntry.transactions.push(firstTx)
-    this.transactions.push(firstTx)
+    transactionDatabase.insert(firstTx)
+    newEntry.transactions.push(firstTx.id)
+    this.transactions.push(firstTx.id)
     this.portfolio.push(newEntry)
     
     return false
@@ -71,7 +79,9 @@ class PortfolioManager {
     
     const pnl = savePNL ? entry.unrealizedPNL(price) : 0
     const tx = new Transaction(undefined, asset, Transaction.types.REMOVE, entry.amount, price, pnl)
-    this.transactions.push(tx)
+
+    transactionDatabase.insert(tx)
+    this.transactions.push(tx.id)
 
     return true
   }
@@ -86,8 +96,10 @@ class PortfolioManager {
     entry.boughtAmount += amount
 
     const tx = new Transaction(undefined, asset, Transaction.types.BUY, amount, price, 0)
-    entry.transactions.push(tx)
-    this.transactions.push(tx)
+    
+    transactionDatabase.insert(tx)
+    entry.transactions.push(tx.id)
+    this.transactions.push(tx.id)
 
     return false
   }
@@ -103,7 +115,9 @@ class PortfolioManager {
       
       const pnl = entry.unrealizedPNL(price)
       const tx = new Transaction(undefined, asset, Transaction.types.SELL, amount, price, pnl)
-      this.transactions.push(tx)
+
+      transactionDatabase.insert(tx)
+      this.transactions.push(tx.id)
 
       return true
     }
@@ -112,8 +126,9 @@ class PortfolioManager {
       const pnl = amount * (price - entry.avgBuyPrice)
       const tx = new Transaction(undefined, asset, Transaction.types.SELL, amount, price, pnl)
 
-      this.transactions.push(tx)
-      entry.transactions.push(tx)
+      transactionDatabase.insert(tx)
+      this.transactions.push(tx.id)
+      entry.transactions.push(tx.id)
 
       return true
     }
