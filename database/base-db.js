@@ -20,6 +20,9 @@ class BaseDatabase {
   
   insert (object) {
     const objects = load(this.filename)
+    if (objects.findIndex(o => o.id == object.id))
+      return
+
     this.save(filename, objects.concat(object))
   }
   
@@ -28,12 +31,6 @@ class BaseDatabase {
   
     objects.splice(index, 1)
     this.save(objects)
-  }
-  
-  findByName (name) {
-    const objects = load(this.filename)
-  
-    return objects.find(investor => investor.name == name)
   }
 
   update (object) {
