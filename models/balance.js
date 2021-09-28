@@ -3,7 +3,7 @@ const Transaction = require('./transaction')
 const transactionDatabase = require('../database/transaction-db')
 
 
-class PortfolioEntry {
+class Balance {
   constructor(asset, amount, buyPrice) {
     this.asset = asset
     this.amount = amount
@@ -15,7 +15,7 @@ class PortfolioEntry {
   static create(portfolioObj) {
     const assetObj = portfolioObj.asset
     const asset = new Asset(assetObj.id, assetObj.name, assetObj.symbol, assetObj.type)
-    const entry = new PortfolioEntry(asset, portfolioObj.amount, portfolioObj.avgBuyPrice)
+    const entry = new Balance(asset, portfolioObj.amount, portfolioObj.avgBuyPrice)
     entry.boughtAmount = portfolioObj.boughtAmount
     entry.transactions = portfolioObj.transactions
     
@@ -43,4 +43,4 @@ class PortfolioEntry {
   }
 }
 
-module.exports = PortfolioEntry
+module.exports = Balance

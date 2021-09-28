@@ -1,5 +1,5 @@
 const uuid = require('uuid')
-const PortfolioEntry = require("./portfolio-entry")
+const PortfolioEntry = require("./balance")
 const Transaction = require('./transaction')
 
 const transactionDatabase = require('../database/transaction-db')
