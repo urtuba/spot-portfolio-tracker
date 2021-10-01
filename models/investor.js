@@ -33,7 +33,7 @@ class Investor {
   }
 
   addFavorite(asset) {
-    if (this.favorites.findIndex(o => o.name == asset.name) >= 0)
+    if (this.favorites.find(obj => obj.name == asset.name))
       return false
     
     this.favorites.push(asset)

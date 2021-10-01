@@ -7,9 +7,9 @@ class AssetDatabase extends BaseDatabase {
         super(Asset)
     }
 
-    findByName (name) {
-        const objects = this.load(this.filename)
-        return objects.find(obj => obj.name == name)
+    async findByName (name) {
+        const objects = await this.load()
+        return objects.find(o => o.name == name)
     }
 }
 
