@@ -25,15 +25,15 @@ class PortfolioManager {
 
     return pm
   }
+  
+  async getTransactions () {
+    const allTx = await transactionDatabase.load()
 
-  async allTransactions() {
-
-    // CANT DO ASYNC
-    const allTx = []
-    this.transactions.forEach(() => {
-      (async id => {allTx.push(await transactionDatabase.findById(id))}) ()
+    return new Promise((resolve, reject) => {
+      const txArr = []
+      // allTx.forEach(tx => tx.id == )
+      resolve(txArr)
     })
-    return allTx
   }
 
   get totalValue() {

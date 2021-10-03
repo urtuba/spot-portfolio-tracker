@@ -39,7 +39,7 @@ class Balance {
   }
 
   get allTransactions() {
-    return this.transactions.map(id => transactionDatabase.findById(id))
+    return this.transactions.map(async (id) => {await transactionDatabase.findById(id)})
   }
 }
 

@@ -3,7 +3,7 @@ const fs = require('fs')
 class BaseDatabase {
   constructor(model) {
     this.model = model
-    this.path = `./${model.name.toLowerCase()}.json`
+    this.path = `./database/data/${model.name.toLowerCase()}.json`
   }
   
   save (objects) {
@@ -16,6 +16,11 @@ class BaseDatabase {
   }
 
   load () {
+    // If db is not created yet
+    const fileExists = fs.existsSync(this.path)
+    if (!fileExists)
+      fs.writeFileSync(this.path, '[]')
+
     return new Promise((resolve, reject)=>{
       fs.readFile(this.path, (err, data) => {
         if (err) reject (err)

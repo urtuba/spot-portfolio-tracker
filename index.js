@@ -24,7 +24,6 @@ async function main()
     
     samed.addFavorite(await assetDatabase.findByName('Bitcoin'))
     samed.addFavorite(await assetDatabase.findByName('Ethereum'))
-    //console.log(samed)
     samed.removeFavorite(await assetDatabase.findByName('Bitcoin'))
 
 
@@ -38,10 +37,9 @@ async function main()
     // console.log(await portfolioManagerDb.load())
 
 
-    // // add new users, then save them into db
+    // add new users, then save them into db
     const armagan = new Investor(undefined, 'Armagan', 'xyz@nimble.dev', 'pwd')
     const omer = new Investor(undefined, 'Omer', 'omer@gmail.com', 'pwd')
-
     await investorDatabase.save([samed, armagan, omer])
     // console.log(await investorDatabase.load())
 
@@ -62,8 +60,8 @@ async function main()
     await samedMainPortfolio.addAsset(await assetDatabase.findByName('Bitcoin'), 1, 40500)
     await samedMainPortfolio.sellAsset(await assetDatabase.findByName('Bitcoin'), 0.5, 43000)
 
-    console.log(samedMainPortfolio)
-    console.log(await samedMainPortfolio.allTransactions()) 
+    // console.log(samedMainPortfolio)
+    // console.log(await samedMainPortfolio.getTransactions()) 
 
 
 }
