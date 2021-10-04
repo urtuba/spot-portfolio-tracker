@@ -1,8 +1,7 @@
-const Wallet = require('./wallet')
 const transactionDb = require('../database/transaction-db')
 
-class WalletManager {
-    async getWalletTransactions (wallet) {
+class PurchaseManager {
+    async getTransactions (wallet) {
         const allTx = await transactionDb.load()
         const walletTx = wallet.transactions.map((tx_id) => {
             return allTx.find(tx => tx_id == tx.id)
@@ -11,4 +10,4 @@ class WalletManager {
     }
 }
 
-module.exports = WalletManager()
+module.exports = new PurchaseManager
