@@ -1,9 +1,9 @@
 const uuid = require('uuid')
 const Balance = require("./balance")
 const Transaction = require('./transaction')
-const walletManager = require('./wallet-manager')
+const walletManager = require('./purchase-manager')
 
-const transactionDatabase = require('../database/transaction-db')
+const transactionDb = require('../database/transaction-db')
 
 class Wallet {
   constructor(id=uuid.v4(), name) {
@@ -15,8 +15,10 @@ class Wallet {
 
   static create(obj) {
     const wallet = new Wallet(obj.id, obj.name)
-    wallet.balances = obj.balances.map(Balance.map)
+    wallet.balances = obj.balances.map(Balance.create)
     wallet.transactions = obj.transactions
+
+    return wallet
   }
   
   get value() {
@@ -33,4 +35,13 @@ class Wallet {
       pnl += tx.amount
     })
   }
+
+  getBalance(assetId) {
+    const bal = this.balances.find((b) => b.asset.id == assetId)
+    if (bal == undefined)
+      throw Error('Balance entry not found.')
+    return bal
+  }
 }
+
+module.exports = Wallet
