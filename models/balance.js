@@ -12,14 +12,15 @@ class Balance {
     this.transactions = []
   }
 
-  static create(portfolioObj) {
-    const assetObj = portfolioObj.asset
+  static create(obj) {
+    const assetObj = obj.asset
     const asset = new Asset(assetObj.id, assetObj.name, assetObj.symbol, assetObj.type)
-    const entry = new Balance(asset, portfolioObj.amount, portfolioObj.avgBuyPrice)
-    entry.boughtAmount = portfolioObj.boughtAmount
-    entry.transactions = portfolioObj.transactions
+    const balance = new Balance(asset, obj.amount, obj.buyPrice)
+    balance.avgBuyPrice = obj.avgBuyPrice
+    balance.boughtAmount = obj.boughtAmount
+    balance.transactions = obj.transactions
     
-    return entry
+    return balance
   } 
 
   value(price) {
