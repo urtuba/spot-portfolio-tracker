@@ -6,6 +6,7 @@ const purchaseManager = require('./models/purchase-manager')
 const Wallet = require('./models/wallet')
 
 const createTestData = async () => {
+  
   // create supported assets and save them
   const btc = new Asset(undefined, 'Bitcoin', 'BTC', Asset.types.COIN)
   const eth = new Asset(undefined, 'Ethereum', 'ETH', Asset.types.COIN)
@@ -32,6 +33,10 @@ const createTestData = async () => {
   const armaganMainWallet = armagan.wallets[0]
   await purchaseManager.addAsset(armaganMainWallet, btc, 15, 50000)
   await purchaseManager.addAsset(armaganMainWallet, usd, 100000, 1)
+  await investorDb.update(armagan)
+
+  // create more transactions
+  await purchaseManager.sellAsset(armaganMainWallet, btc, 10, 65000)
   await purchaseManager.removeAsset(armaganMainWallet, btc, 55000, true)
   await investorDb.update(armagan)
 
