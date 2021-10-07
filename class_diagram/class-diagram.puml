@@ -1,31 +1,32 @@
 @startuml ClassDiagram
 
-class Investor <entity>{
-    + name: String
-    + email: String
-    - password: String
-    + wallets: [PortfolioManager]
-    + favorites: [Asset]
-    + totalValue ()
-    + totalPNL ()
-    + addFavorite ()
-    + removeFavorite ()
-    + addWallet (name)
-    + getWallet (name)
-    + removeWallet (name)
+class InvestorManager <manager> {
+    + updateEmail (investor, newEmail)
+    + updatePassword (investor, newPassword)
+    + createWallet (investor, walletName)
+    + getWallet (investor, walletName)
+    + removeWallet (investor, walletName)
 }
 
-class PortfolioManager <entity> {
-    + name: String
-    + portfolio: [PortfolioEntry]
-    + transactions: [Transaction]
-    + totalPNL ()
-    + totalValue ()
-    + getPortfolioEntry (name)
-    + addAsset (asset, amount, price)
-    + buyAsset (asset, amount, price)
-    + sellAsset (asset, amount, price)
-    + removeAsset (asset, price, savePNL)
+class PurchaseManager <manager> {
+    + getTransactions (wallet)
+    + addAsset (wallet, asset, amount, price)
+    + removeAsset (wallet, asset, price, savePNL)
+    + buyAsset (wallet, asset, amount, price)
+    + sellAsset (wallet, asset, amount, price)
+}
+
+class Investor <entity>{
+    - id: String
+    - name: String
+    - email: String
+    - password: String
+    - wallets: [Wallet]
+    - favorites: [Asset]
+    - pastPNL: Number
+    + get totalPNL ()
+    + addFavorite (asset)
+    + removeFavorite (asset)
 }
 
 class Asset <entity> {
@@ -34,24 +35,36 @@ class Asset <entity> {
     + type: String
 }
 
-class PortfolioEntry <portfolioEntryObject> {
-    + asset: Asset
-    + amount: Number
+class Balance <entity> {
+    - asset: Asset
+    - amount: Number
     - boughtAmount: Number
-    + avgBuyPrice: Number
-    + transactions: [Transaction]
-    + value (price)
+    - avgBuyPrice: Number
+    - transactions: [Transaction]
+    - value (price)
     + unrealizedPNL (price)
     + totalPNL ()
+    + allTransactions ()
 }
 
-class Transaction <transactionObject> {
-    + time: Number / Datetime
-    + asset: Asset
-    + type: Type
-    + amount: Number
-    + price: Number
-    + pnl: Number
+class Transaction <entity> {
+    - id: String
+    - time: Date
+    - asset: Asset
+    - type: Type
+    - amount: Number
+    - price: Number
+    - pnl: Number
+}
+
+class Wallet <entity> {
+    - id: String
+    - name: String
+    - balances: [Balance]
+    - transactions: [Transactions]
+    + value ()
+    + pnl ()
+    + getBalance (assetId)
 }
 
 enum AssetType <enum> {
@@ -67,13 +80,18 @@ enum TransactionType <enum> {
     SELL
 }
 
-PortfolioManager "n" <-UP-* "1" Investor: owns <
-Asset <|-- PortfolioEntry
-PortfolioEntry "1" o--> "n" Transaction: has >
-PortfolioManager "1" o--> "n" Transaction: has >
-PortfolioManager "1" o--> "n" PortfolioEntry: has >
+Wallet "n" <-UP-* "1" Investor: owns <
+Asset <|-- Balance
+Balance "1" o--> "n" Transaction: has >
+Wallet "1" o--> "n" Transaction: has >
+Wallet "1" o--> "n" Balance: has >
 Asset  --> "1" AssetType
 Transaction --> "1" TransactionType
 Investor "1" --> "n" Asset
+
+InvestorManager "1" --> "n" Investor: manages >
+InvestorManager "1" --> "n" Wallet: manages >
+PurchaseManager "1" --> "n" Wallet: manages >
+PurchaseManager "1" --> "n" Balance: manages >
 
 @enduml
