@@ -48,33 +48,6 @@ class Investor {
     this.favorites.splice(idx, 1)
     return true
   }
-
-  createWallet(name) {
-    const newWallet = new Wallet(undefined, name)
-    this.wallets.push(newWallet)
-    return true
-  }
-
-  getWallet(name) {
-    for (let i = 0; i < this.wallets.length; i++) {
-      if (this.wallets[i].name == name) {
-        return this.wallets[i]
-      }
-    }
-    return null
-  }
-
-  removeWallet(name, savePNL=true) {
-    const wallet = getWallet(name)
-    if (wallet == null || wallet.name == 'Main') return false;
-
-    if (savePNL) wallet.pastPNL += wallet.totalPNL
-
-    const walletIdx = this.wallets.indexOf(wallet)
-    this.wallets.splice(walletIdx, 1)
-
-    return true
-  }
 }
 
 module.exports = Investor
