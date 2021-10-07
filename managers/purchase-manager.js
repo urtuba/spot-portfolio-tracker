@@ -1,6 +1,6 @@
 const transactionDb = require('../database/transaction-db')
-const Balance = require('./balance')
-const Transaction = require('./transaction')
+const Balance = require('../models/balance')
+const Transaction = require('../models/transaction')
 
 class PurchaseManager {
   async getTransactions (wallet) {

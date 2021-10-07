@@ -1,5 +1,3 @@
-// const Investor = require('./models/investor')
-// const Asset = require('./models/asset')
 
 const assetDb = require('./database/asset-db')
 const investorDb = require('./database/investor-db')
@@ -7,7 +5,7 @@ const transactionDb = require('./database/transaction-db')
 
 const { createTestData } = require('./create-data')
 const { resetDb } = require('./reset-db')
-// const { loadTransactions } = require('./lib/utils')
+const { loadTransactions } = require('./lib/utils')
 
 
 async function main()

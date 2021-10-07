@@ -2,8 +2,8 @@ const assetDb = require('./database/asset-db')
 const investorDb = require('./database/investor-db')
 const Asset = require('./models/asset')
 const Investor = require('./models/investor')
-const investorManager = require('./models/investor-manager')
-const purchaseManager = require('./models/purchase-manager')
+const investorManager = require('./managers/investor-manager')
+const purchaseManager = require('./managers/purchase-manager')
 
 const createTestData = async () => {
   

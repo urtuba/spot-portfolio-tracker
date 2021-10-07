@@ -1,5 +1,5 @@
 const investorDb = require("../database/investor-db")
-const Wallet = require("./wallet")
+const Wallet = require("../models/wallet")
 
 class InvestorManager {  
   constructor() {}

@@ -1,6 +1,6 @@
 const uuid = require('uuid')
 const Balance = require("./balance")
-const walletManager = require('./purchase-manager')
+const walletManager = require('../managers/purchase-manager')
 
 
 class Wallet {
