@@ -1,6 +1,5 @@
 const Asset = require('./asset')
-const Transaction = require('./transaction')
-const transactionDatabase = require('../database/transaction-db')
+const transactionDb = require('../database/transaction-db')
 
 
 class Balance {
@@ -34,13 +33,13 @@ class Balance {
   get totalPNL() {
     let totalPnl = 0
     for (let i = 0; i < this.transactions.length; i++) {
-      totalPnl += transactionDatabase.fin
+      totalPnl += transactionDb.fin
     }
     return totalPnl
   }
 
   get allTransactions() {
-    return this.transactions.map(async (id) => {await transactionDatabase.findById(id)})
+    return this.transactions.map(async (id) => {await transactionDb.findById(id)})
   }
 }
 

@@ -2,8 +2,8 @@ const assetDb = require('./database/asset-db')
 const investorDb = require('./database/investor-db')
 const Asset = require('./models/asset')
 const Investor = require('./models/investor')
+const investorManager = require('./models/investor-manager')
 const purchaseManager = require('./models/purchase-manager')
-const Wallet = require('./models/wallet')
 
 const createTestData = async () => {
   
@@ -25,12 +25,11 @@ const createTestData = async () => {
   // update users in database
   samed.password = 'samed123'
   samed.removeFavorite(btc)
-  const samedLongTerm = new Wallet(undefined, 'Long Term Wallet')
-  samed.wallets.push(samedLongTerm)
+  investorManager.createWallet(samed, 'Long Term Wallet')
   await investorDb.update(samed)
 
   // use purchase manager to manage wallets
-  const armaganMainWallet = armagan.wallets[0]
+  const armaganMainWallet = investorManager.getWallet(armagan, 'Main')
   await purchaseManager.addAsset(armaganMainWallet, btc, 15, 50000)
   await purchaseManager.addAsset(armaganMainWallet, usd, 100000, 1)
   await investorDb.update(armagan)

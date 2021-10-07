@@ -1,16 +1,13 @@
-const Investor = require('./models/investor')
-const Asset = require('./models/asset')
+// const Investor = require('./models/investor')
+// const Asset = require('./models/asset')
 
-const assetDatabase = require('./database/asset-db')
-const investorDatabase = require('./database/investor-db')
-const walletDb = require('./database/wallet-db')
-const transactionDatabase = require('./database/transaction-db')
-
-const { createTestData } = require('./test-data')
-const { resetDb } = require('./reset-db')
+const assetDb = require('./database/asset-db')
 const investorDb = require('./database/investor-db')
 const transactionDb = require('./database/transaction-db')
-const { loadTransactions } = require('./lib/utils')
+
+const { createTestData } = require('./create-data')
+const { resetDb } = require('./reset-db')
+// const { loadTransactions } = require('./lib/utils')
 
 
 async function main()
@@ -18,9 +15,9 @@ async function main()
     await resetDb()
     await createTestData()
     
-    const assets = await assetDatabase.load()
-    const investors = await investorDatabase.load()
-    const transactions = await transactionDatabase.load()
+    const assets = await assetDb.load()
+    const investors = await investorDb.load()
+    const transactions = await transactionDb.load()
 
     console.log('\nLOADED : ' + assets.length + ' Assets')
     assets.forEach(asset => {

@@ -1,9 +1,7 @@
 const uuid = require('uuid')
 const Balance = require("./balance")
-const Transaction = require('./transaction')
 const walletManager = require('./purchase-manager')
 
-const transactionDb = require('../database/transaction-db')
 
 class Wallet {
   constructor(id=uuid.v4(), name) {
