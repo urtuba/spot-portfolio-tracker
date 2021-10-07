@@ -20,12 +20,22 @@ async function main()
     
     const assets = await assetDatabase.load()
     const investors = await investorDatabase.load()
+    const transactions = await transactionDatabase.load()
 
-    console.log('LOADED : ' + assets.length + ' Assets')
-    console.log('LOADED : ' + investors.length + ' Investors')
-    
-    const txs = investors[1].wallets[0].transactions
-    console.log(await loadTransactions(txs))
+    console.log('\nLOADED : ' + assets.length + ' Assets')
+    assets.forEach(asset => {
+        console.log(asset.id + ' ' + asset.name)
+    });
+
+    console.log('\nLOADED : ' + investors.length + ' Investors')
+    investors.forEach(investor => {
+        console.log(investor.id + ' ' + investor.name)
+    });
+
+    console.log('\nLOADED : ' + transactions.length + ' Transactions')
+    transactions.forEach(tx => {
+        console.log(`${tx.id} : ${tx.amount} ${tx.asset.symbol} : ${tx.type} : $ ${tx.price}`)
+    });
 }
 
 main()
