@@ -17,15 +17,15 @@ class PurchaseManager {
       throw Error(`${this.addAsset.name} error. Balance already exists! Buy or Sell.`)
     }
     catch (error) {
-      const newBalance = new Balance(asset, amount, price)
-      const firstTx = new Transaction(undefined, asset, Transaction.types.ADD, amount, price, 0)
-      await transactionDb.insert(firstTx)
-
-      newBalance.transactions.push(firstTx.id)
-      wallet.transactions.push(firstTx.id)
-      wallet.balances.push(newBalance)
-      // console.error(`Asset added: ${error}`)
+      console.error('Expected Error(NOPE): '+ error)
     }
+    const newBalance = new Balance(asset, amount, price)
+    const firstTx = new Transaction(undefined, asset, Transaction.types.ADD, amount, price, 0)
+    await transactionDb.insert(firstTx)
+
+    newBalance.transactions.push(firstTx.id)
+    wallet.transactions.push(firstTx.id)
+    wallet.balances.push(newBalance)
   }
 
   async removeAsset(wallet, asset, price, savePnl) {
