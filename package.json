@@ -1,11 +1,8 @@
 {
-  "dependencies": {
-    "uuid": "^8.3.2"
-  },
   "name": "spot-portfolio-tracker",
-  "version": "0.0.2",
+  "version": "0.0.3",
+  "description": "Simple and handy portfolio tracking app",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
@@ -15,15 +12,29 @@
     "url": "git+https://github.com/urtuba/spot-portfolio-tracker.git"
   },
   "keywords": [
+    "spot",
     "portfolio",
-    "cryptoassets",
-    "trading"
+    "investment",
+    "share",
+    "asset",
+    "crypto",
+    "fiat"
   ],
-  "author": "urtuba / Samed Kahyaoglu",
+  "author": "urtuba (Samed Kahyaoglu)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/urtuba/spot-portfolio-tracker/issues"
   },
   "homepage": "https://github.com/urtuba/spot-portfolio-tracker#readme",
-  "description": ""
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-standard": "^5.0.0"
+  },
+  "dependencies": {
+    "uuid": "^8.3.2"
+  }
 }

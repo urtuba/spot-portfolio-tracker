@@ -1,11 +1,10 @@
-const Transaction = require("../models/transaction");
-const BaseDatabase = require("./base-db");
-
+const Transaction = require('../models/transaction')
+const BaseDatabase = require('./base-db')
 
 class TransactionDatabase extends BaseDatabase {
-    constructor () {
-        super(Transaction)
-    }
+  constructor () {
+    super(Transaction)
+  }
 }
 
-module.exports = new TransactionDatabase
+module.exports = new TransactionDatabase()
