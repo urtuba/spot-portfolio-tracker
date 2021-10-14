@@ -38,6 +38,7 @@
     "nodemon": "^2.0.13"
   },
   "dependencies": {
+    "pug": "^3.0.2",
     "uuid": "^8.3.2"
   }
 }
