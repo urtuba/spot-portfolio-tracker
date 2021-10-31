@@ -10,9 +10,12 @@ html(lang="en")
     h1 Spot Portfolio Tracker
     p A Simple And Handy Portfolio Tracking App
 
-    h2 Investors
-    p There are #{investors.length} investors using this app.
+    h2 Assets
+    p There are #{assets.length} investors using this app.
 
-    ol
-      each inv in investors
-        li #{inv.name} - #{inv.email}
+    ul
+      each asset in assets
+        li 
+          a(href="localhost:3001/asset?id=" + asset.id) #{asset.name} - #{asset.symbol} 
+        
+        
