@@ -1,4 +1,5 @@
 const express = require('express')
+const bcrypt = require('bcrypt')
 
 const Investor = require('./models/investor')
 const assetDb = require('./database/asset-db')
@@ -20,16 +21,23 @@ app.get('/register', (req, res) => {
 
 // USER: register-put
 app.post('/register', async (req, res) => {
+  console.log(req)
   if (req.body.confirm == undefined) {
     console.error('REGISTER: no confirmation')
     res.redirect('/register')
     return
   }
 
-  const user = new Investor(undefined, req.body.name, req.body.email, req.body.password)
-  await investorDb.insert(user)
-  console.log(`REGISTER: new user ${user.id}`)
-  res.redirect('/login')
+  try {
+    const pwdHash = await bcrypt.hash(req.body.password, 10)
+    const user = new Investor(undefined, req.body.name, req.body.email, pwdHash)
+    await investorDb.insert(user)
+    console.log(`REGISTER: new user ${user.id}`)
+    res.status(201).redirect('/login')
+  } catch (error) {
+    console.error(error)
+    res.status(500).send()
+  }
 })
 // ===== //
 
@@ -40,6 +48,7 @@ app.get('/login', (req, res) => {
 
 // USER: login-post
 app.post('/login', async (req, res) => {
+  console.log(req.body)
   if (req.body.email == undefined || req.body.password == undefined) {
     console.error('LOGIN: lack of information')
     res.redirect('login')
@@ -47,14 +56,24 @@ app.post('/login', async (req, res) => {
   }
 
   const user = await investorDb.findByEmail(req.body.email)
-  if (user == undefined || req.body.password != user.password) {
-    console.error('LOGIN: wrong creditendals')
+  if (user == undefined) {
+    console.error('LOGIN: user not found')
     res.redirect('login')
     return
   }
 
-  console.log(`LOGIN: user ${user.id}`)
-  res.redirect('/')
+  try {
+    const validPwd = await bcrypt.compare(req.body.password, user.password)
+    if (validPwd) {
+      console.log(`LOGIN: user ${user.id}`)
+      res.status(200).redirect('/')
+      return
+    }
+    console.error('LOGIN: invalid pwd')
+    res.status(500).send()
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 // GENERAL: get-assets
@@ -75,6 +94,6 @@ app.get('/asset', async (req, res) => {
   }
 })
 
-app.listen(3001, () => {
+app.listen(3000, () => {
   console.log('listening on 3000')
 })
