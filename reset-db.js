@@ -1,13 +1,20 @@
 const assetDb = require('./database/asset-db')
 const investorDb = require('./database/investor-db')
 const transactionDb = require('./database/transaction-db')
-const walletDb = require('./database/wallet-db')
+const Asset = require('./models/asset')
+
+const btc = new Asset(undefined, 'Bitcoin', 'BTC', Asset.types.COIN)
+const eth = new Asset(undefined, 'Ethereum', 'ETH', Asset.types.COIN)
+const usd = new Asset(undefined, 'Dollars', 'USD', Asset.types.FIAT)
 
 const resetDb = async () => {
-  await assetDb.save([])
+  await assetDb.save([btc, eth, usd])
   await investorDb.save([])
-  await walletDb.save([])
   await transactionDb.save([])
 }
 
-module.exports = { resetDb }
+const main = async () => {
+  await resetDb()
+}
+
+main()
