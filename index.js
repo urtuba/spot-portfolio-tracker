@@ -60,14 +60,12 @@ app.post('/login', async (req, res) => {
 // GENERAL: get-assets
 app.get('/assets', async (req, res) => {
   const assets = await assetDb.load()
-  console.log('allah')
   res.status(200).render('assets', { assets: assets })
   // links not working, why?
 })
 
 // GENERAL: get-asset-info
 app.get('/asset', async (req, res) => {
-  console.log(req.query)
   try {
     const asset = await assetDb.findById(req.query.id)
     res.status(200).render('asset', { asset: asset })

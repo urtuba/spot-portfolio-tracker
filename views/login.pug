@@ -9,10 +9,10 @@ html(lang="en")
   body 
     main 
       div(id="form-container")
-        form(action="/", method="post") 
-          label(for="a") email
-            input(type="text" id="a") 
-          label(for="b") password
-            input(type="password  " id="b")
-          label(for="LoginSubmit")
-            input(type="submit", id="LoginSubmit")
+        form(action="/login", method="post") 
+          label(for="email") email
+            input(type="text" id="email" name="email") 
+          label(for="password") password
+            input(type="password  " id="password" name="password")
+          label(for="login-submit")
+            input(type="submit", id="login-submit" name="login-submit")
