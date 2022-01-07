@@ -29,8 +29,8 @@ router.get('/:id', async (req, res) => {
 
 // UPDATE AN ASSET BY ID
 router.patch('/:id', async (req, res) => {
-  const { name } = req.body
-  await assetDb.update(req.params.id, name)
+  const asset = await assetDb.update(req.params.id, req.body)
+  res.status(200).json(asset)
 })
 
 module.exports = router

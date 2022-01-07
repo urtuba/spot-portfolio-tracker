@@ -25,14 +25,9 @@ class BaseDatabase {
     return this.model.find({ [property]: value })
   }
 
-  async update (object) {
-    const objects = await this.load()
-    const objectIdx = objects.findIndex(o => o.id == object.id)
-
-    if (objectIdx < 0) { throw Error(`Object with id ${object.id} is not found.`) }
-
-    objects.splice(objectIdx, 1, object)
-    return this.save(objects)
+  async update (id, object) {
+    console.log(object)
+    return this.model.findOneAndUpdate({ _id: id }, { $set: object })
   }
 }
 
