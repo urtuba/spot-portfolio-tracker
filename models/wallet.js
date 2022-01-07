@@ -1,45 +1,36 @@
-const uuid = require('uuid')
-const Balance = require('./balance')
-const walletManager = require('../managers/purchase-manager')
+const mongoose = require('mongoose')
 
-class Wallet {
-  constructor (id = uuid.v4(), name) {
-    this.id = id
-    this.name = name
-    this.balances = []
-    this.transactions = []
-  }
+const WalletSchema = new mongoose.Schema({
+  name: String,
+  balances: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Balance', autopopulate: true }],
+  transactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction', autopopulate: true }]
+})
 
-  static create (obj) {
-    const wallet = new Wallet(obj.id, obj.name)
-    wallet.balances = obj.balances.map(Balance.create)
-    wallet.transactions = obj.transactions
-
-    return wallet
-  }
-
-  get value () {
-    let val = 0
-    this.portfolio.forEach((balance) => {
-      val += balance.value
-    })
-    return val
-  }
-
-  get pnl () {
-    const txs = walletManager.getWalletTransactions(this)
-    let pnl = 0
-    txs.forEach((tx) => {
-      pnl += tx.amount
-    })
-    return pnl
-  }
-
-  getBalance (assetId) {
-    const bal = this.balances.find((b) => b.asset.id == assetId)
-    if (bal == undefined) { throw Error('Balance entry not found.') }
-    return bal
-  }
+WalletSchema.methods.getValue = () => {
+  let value = 0
+  this.balances.forEach(balance => {
+    value += balance.value
+  })
+  return value
 }
 
-module.exports = Wallet
+WalletSchema.methods.getTotalPNL = () => {
+  let totalPNL = 0
+  this.transactions.forEach(transaction => {
+    totalPNL += transaction.pnl
+  })
+  return totalPNL
+}
+
+WalletSchema.methods.getAllTransactions = () => {
+  return this.transactions
+}
+
+WalletSchema.methods.getBalance = (assetId) => {
+  this.balances.find(balance => {
+    return balance.asset.id == assetId
+  })
+}
+
+WalletSchema.plugin(require('mongoose-autopopulate'))
+module.exports = mongoose.model('Wallet', WalletSchema)

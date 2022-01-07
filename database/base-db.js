@@ -26,7 +26,6 @@ class BaseDatabase {
   }
 
   async update (id, object) {
-    console.log(object)
     return this.model.findOneAndUpdate({ _id: id }, { $set: object })
   }
 }
