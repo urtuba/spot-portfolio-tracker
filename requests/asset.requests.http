@@ -1,0 +1,26 @@
+
+### ADD ASSET TO DATABASE ###
+POST http://localhost:3000/asset HTTP/1.1
+content-type: application/json
+
+{
+    "name": "SamedCoin",
+    "symol": "Samed",
+    "type": "Coin"
+}
+
+### GET ALL ASSETS ### 
+GET  http://localhost:3000/asset/all HTTP/1.1
+
+### GET ASSET BY ID ###
+GET http://localhost:3000/asset/61d89cd2182f4aa1083996ad HTTP/1.1
+
+### UPDATE ASSET ###
+PATCH http://localhost:3000/asset/61d89cd2182f4aa1083996ad HTTP/1.1
+content-type: application/json
+
+{
+    "name": "SamedCoin",
+    "symbol": "SMD",
+    "type": "Coin"
+}
