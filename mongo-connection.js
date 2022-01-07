@@ -9,5 +9,5 @@ const assetDb = require('./database/asset-db');
     console.error('MONGODB: No Connection!\n', err)
   }
 
-  await assetDb.insert({ name: 'Coin', symbol: 'c', type: 'allah' })
+  await assetDb.insert({ name: 'Bitcoin', symbol: 'BTC', type: 'Coin' })
 })()
