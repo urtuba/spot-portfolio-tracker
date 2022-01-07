@@ -2,17 +2,22 @@ const express = require('express')
 const session = require('express-session')
 const bcrypt = require('bcrypt')
 
-const api = require('./routers/asset-api')
+const baseAPI = require('./routers/api')
+const assetAPI = require('./routers/asset-api')
+const transactionAPI = require('./routers/tx-api')
 // const Investor = require('./models/investor')
-const assetDb = require('./database/asset-db')
 // const investorDb = require('./database/investor-db')
 // const asset = require('./models/asset')
 
 require('./mongo-connection')
 const app = express()
 app.set('view engine', 'pug')
+
 app.use(express.json())
-app.use('/asset', api)
+app.use('/', baseAPI)
+app.use('/asset', assetAPI)
+app.use('/tx', transactionAPI)
+
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
 
 // // HOMEPAGE
