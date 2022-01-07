@@ -7,8 +7,8 @@ class InvestorDatabase extends BaseDatabase {
   }
 
   async findByEmail (email) {
-    const objects = await this.load()
-    return objects.find(o => o.email == email)
+    const res = await this.model.findOne({ email: email })
+    return res
   }
 }
 
