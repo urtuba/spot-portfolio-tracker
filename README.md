@@ -1,0 +1,6 @@
+# spot-portfolio-tracker
+
+CAUTION: Development is interrupted due to higher priority projects. Since I have not much to learn from it, it won't continue unless I got crazy.
+
+Simple, easy-to-use spot portfolio tracking app for crypto assets.
+
